@@ -76,6 +76,7 @@ var TweetForm = function () {
 
         this.form = document.getElementById(props.form);
         this.container = document.getElementById(props.tweetsContainer);
+        console.log(document.getElementById(props.tweetsContainer));
         this.form.onsubmit = this.onSubmit.bind(this);
     }
 
@@ -89,10 +90,13 @@ var TweetForm = function () {
     }, {
         key: "add",
         value: function add() {
+            var _this2 = this;
+
             this.postData('https://api-nave-twitter.herokuapp.com/tweets', { userId: 1, text: "novo" }).then(function (data) {
-                return console.log(data);
-            }) // JSON from `response.json()` call
-            .catch(function (error) {
+                var tweet = new Tweet(data);
+                document.forms["create-tweet"]["tweet"].value = "";
+                _this2.container.append(tweet.render());
+            }).catch(function (error) {
                 return console.error(error);
             });
         }
@@ -102,7 +106,7 @@ var TweetForm = function () {
             return fetch(url, {
                 body: JSON.stringify({ userId: 1, text: this.text }),
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json, text/plain, */*' }
             }).then(function (response) {
                 return response.json();
             });

@@ -49,6 +49,7 @@ class TweetForm {
     constructor(props) {
         this.form = document.getElementById(props.form);
         this.container = document.getElementById(props.tweetsContainer);
+        console.log( document.getElementById(props.tweetsContainer));
         this.form.onsubmit = this.onSubmit.bind(this);
     }
 
@@ -61,7 +62,11 @@ class TweetForm {
 
     add() {
         this.postData('https://api-nave-twitter.herokuapp.com/tweets', {userId: 1, text: "novo"})
-            .then(data => console.log(data)) // JSON from `response.json()` call
+            .then(data => {
+                const tweet = new Tweet(data);
+                document.forms["create-tweet"]["tweet"].value = "";
+                this.container.append(tweet.render());
+            })
             .catch(error => console.error(error))   
     }
 
@@ -69,7 +74,7 @@ class TweetForm {
     return fetch(url, {
         body: JSON.stringify({userId: 1, text: this.text}),
         method: 'POST',
-        headers: {'Content-Type':'application/x-www-form-urlencoded'}
+        headers: {'Content-Type': 'application/json', 'Accept': 'application/json, text/plain, */*'}
     })
     .then(response => response.json())
     }  
