@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -8,20 +8,42 @@ var Tweet = function () {
     function Tweet(props) {
         _classCallCheck(this, Tweet);
 
-        this.name = props.name;
+        this.name = props.username;
         this.text = props.text;
+        this.id = props._id;
+        this.delete = this.delete.bind(this);
     }
 
     _createClass(Tweet, [{
-        key: "render",
+        key: 'delete',
+        value: function _delete() {
+            var _this = this;
+
+            fetch('https://twitter-nave-api.herokuapp.com/tweets/' + this.id, {
+                method: 'delete',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json, text/plain, */*' }
+            }).then(function () {
+                return _this.tweet.remove();
+            });
+        }
+    }, {
+        key: 'render',
         value: function render() {
             var tweet = document.createElement("li");
             var user = document.createElement("span");
-            user.innerHTML = this.name;
+            var deleteButton = document.createElement("button");
             var text = document.createElement("p");
+            var div = document.createElement("div");
+            deleteButton.onclick = this.delete;
+            deleteButton.innerHTML = "Excluir";
+            user.innerHTML = this.name;
             text.innerHTML = this.text;
+            div.appendChild(text);
+            div.appendChild(deleteButton);
             tweet.appendChild(user);
-            tweet.appendChild(text);
+            tweet.appendChild(div);
+            tweet.classList.add("tweet");
+            this.tweet = tweet;
             return tweet;
         }
     }]);
@@ -37,10 +59,10 @@ var TweetList = function () {
     }
 
     _createClass(TweetList, [{
-        key: "getTweets",
+        key: 'getTweets',
         value: function getTweets() {
             return new Promise(function (resolve, reject) {
-                fetch('https://api-nave-twitter.herokuapp.com/tweets').then(function (response) {
+                fetch('https://twitter-nave-api.herokuapp.com/tweets').then(function (response) {
                     response.json().then(function (data) {
                         resolve(data);
                     });
@@ -50,9 +72,9 @@ var TweetList = function () {
             });
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
-            var _this = this;
+            var _this2 = this;
 
             var tweetsData = this.getTweets();
             tweetsData.then(function (resp) {
@@ -61,7 +83,7 @@ var TweetList = function () {
                     return tweet.render();
                 });
                 html.forEach(function (el) {
-                    return _this.container.appendChild(el);
+                    return _this2.container.appendChild(el);
                 });
             });
         }
@@ -76,35 +98,32 @@ var TweetForm = function () {
 
         this.form = document.getElementById(props.form);
         this.container = document.getElementById(props.tweetsContainer);
-        console.log(document.getElementById(props.tweetsContainer));
         this.form.onsubmit = this.onSubmit.bind(this);
     }
 
     _createClass(TweetForm, [{
-        key: "onSubmit",
+        key: 'onSubmit',
         value: function onSubmit(e) {
             e.preventDefault();
             this.text = document.forms["create-tweet"]["tweet"].value;
             if (this.text) this.add();
         }
     }, {
-        key: "add",
+        key: 'add',
         value: function add() {
-            var _this2 = this;
+            var _this3 = this;
 
-            this.postData('https://api-nave-twitter.herokuapp.com/tweets', { userId: 1, text: "novo" }).then(function (data) {
+            this.postData('https://twitter-nave-api.herokuapp.com/tweets').then(function (data) {
                 var tweet = new Tweet(data);
                 document.forms["create-tweet"]["tweet"].value = "";
-                _this2.container.append(tweet.render());
-            }).catch(function (error) {
-                return console.error(error);
+                _this3.container.append(tweet.render());
             });
         }
     }, {
-        key: "postData",
-        value: function postData(url, data) {
+        key: 'postData',
+        value: function postData(url) {
             return fetch(url, {
-                body: JSON.stringify({ userId: 1, text: this.text }),
+                body: JSON.stringify({ text: this.text }),
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json, text/plain, */*' }
             }).then(function (response) {
@@ -125,5 +144,3 @@ var tweetForm = new TweetForm({
 });
 
 list.render();
-
-console.log("ceee");

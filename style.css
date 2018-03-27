@@ -1,0 +1,39 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+.tweet {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.tweet-box {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+}
+
+.tweets-list {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-submit {
+    padding: 5px 10px
+}
+
+ul li span,
+ul li button,
+ul li p {
+    margin: 5px;
+}
+
+ul li div {
+    display: flex;
+}
+
+ul li span {
+    font-weight: 800;
+}
