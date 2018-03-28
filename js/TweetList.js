@@ -8,14 +8,14 @@ export default class TweetList {
     }
 
     getTweets() {
-        fetchTweets()
+        return fetchTweets()
             .then((resp) => {
                 this.tweets = resp;
             })
     }
 
-    render() {
-        this.getTweets();
+    async render() {
+        await this.getTweets();
         const html = this.tweets.map(t => {
             const tweet = new Tweet(t);
             return tweet.render();
