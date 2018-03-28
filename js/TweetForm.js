@@ -1,4 +1,5 @@
 import Tweet from './Tweet';
+import { postTweet } from './services/services';
 
 export default class TweetForm {
     constructor(props) {
@@ -15,20 +16,11 @@ export default class TweetForm {
     }
 
     add() {
-        this.postData('https://twitter-nave-api.herokuapp.com/tweets')
+        postTweet(this.text)
             .then(data => {
                 const tweet = new Tweet(data);
                 document.forms["create-tweet"]["tweet"].value = "";
                 this.container.append(tweet.render());
             })   
-    }
-
-    postData(url) {
-        return fetch(url, {
-            body: JSON.stringify({text: this.text}),
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', 'Accept': 'application/json, text/plain, */*'}
-        })
-        .then(response => response.json())
     }  
 }

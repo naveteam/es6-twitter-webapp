@@ -1,3 +1,5 @@
+import { deleteTweet } from './services/services';
+
 export default class Tweet {
     constructor(props) {
         this.name = props.username;
@@ -7,10 +9,7 @@ export default class Tweet {
     }
 
     delete() {
-        fetch(`https://twitter-nave-api.herokuapp.com/tweets/${this.id}`, {
-            method: 'delete',
-            headers: {'Content-Type': 'application/json', 'Accept': 'application/json, text/plain, */*'}
-        })
+        deleteTweet(this.id)
             .then(() => this.tweet.remove());
     }
 
