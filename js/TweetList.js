@@ -15,11 +15,15 @@ export default class TweetList {
     }
 
     async render() {
-        await this.getTweets();
-        const html = this.tweets.map(t => {
-            const tweet = new Tweet(t);
-            return tweet.render();
-        });
-        html.forEach(el => this.container.appendChild(el));
+        try {
+            await this.getTweets();
+            const html = this.tweets.map(t => {
+                const tweet = new Tweet(t);
+                return tweet.render();
+            });
+            html.forEach(el => this.container.appendChild(el));
+        } catch(e) {
+            console.log(e);
+        }
     }
 }
