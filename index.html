@@ -3,20 +3,32 @@
 <head>
     <meta charset="utf-8" />
     <title>Page Title</title>
-    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.0/css/bulma.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <section class="tweet-box">
-        <form name="create-tweet" id="tweet-form">
-            <textarea name="tweet" cols="60" rows="10"></textarea>
-            <br>
-            <button type="submit" class="btn-submit">Enviar tweet</button>
-        </form>
+    <section class="section">
+        <div class="container">
+            <div class="columns is-multiline is-centered">
+                <form name="create-tweet" id="tweet-form">
+                    <div class="field">
+                        <div class="control">
+                            <textarea class="textarea" name="tweet" placeholder="Escreva o seu tweet" cols="40" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <div class="field is-pulled-right">
+                        <div class="control">
+                            <button type="submit" class="button is-dark">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </section>
-        <section class="tweets-list">
-        <ul id="tweets-container">
-        </ul>
-    </section>  
+    <section class="section">
+        <div id="tweets-container">
+        </div>
+    </section>    
     <script src="build/main.bundle.js"></script>
 </body>
 </html>

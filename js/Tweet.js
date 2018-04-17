@@ -6,28 +6,38 @@ export default class Tweet {
         this.text = props.text;
         this.id = props._id;
         this.delete = this.delete.bind(this);
+        window.deleteTweet = this.delete;
     }
 
-    delete() {
-        deleteTweet(this.id)
+    card(){ 
+        return`
+            <div class="card column is-one-third">
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-content">
+                            <p class="title is-4">${this.name}</p>
+                        </div>
+                    </div>
+                    <div class="content">
+                        ${this.text}
+                    </div>
+                    <button class="button is-dark is-pulled-right" onclick="window.deleteTweet('${this.id}')">
+                        Excluir
+                    </button>
+                </div>
+            </div>
+    `}
+
+    delete(id) {
+        deleteTweet(id)
             .then(() => this.tweet.remove());
     }
 
     render() {
-        const tweet = document.createElement("li");
-        const user = document.createElement("span");
-        const deleteButton = document.createElement("button");
-        const text = document.createElement("p")
-        const div = document.createElement("div");
-        deleteButton.onclick = this.delete;
-        deleteButton.innerHTML = "Excluir";
-        user.innerHTML = this.name;
-        text.innerHTML = this.text;
-        div.appendChild(text);
-        div.appendChild(deleteButton);
-        tweet.appendChild(user);
-        tweet.appendChild(div);
-        tweet.classList.add("tweet");
+        const tweet = document.createElement("div")
+        tweet.classList.add("columns", "is-multiline", "is-centered");
+        const cardContainer = this.card(this.name, this.text, this.delete);
+        tweet.innerHTML = cardContainer;
         this.tweet = tweet;
         return tweet;
     }
