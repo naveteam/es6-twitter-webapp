@@ -1,7 +1,15 @@
 # ES6 Twitter WebApp
 
-Para executar a aplicação, primeiramente rode o comando:
+Para instalar as dependencias rode o comando:
+
+```javascript
+npm i
+```
+
+Para executar a aplicação:
 
 ```javascript
 npm run webpack
 ```
+
+É necessario que você tenha o [NodeJs](https://nodejs.org/en/) instalado em seu computador.
